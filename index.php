@@ -108,7 +108,7 @@ $app->get('/auth', function() use($twig)
     }
     else
     {
-        $url = "https://github.com/login/oauth/authorize?client_id=$client_id&redirect_uri=$redirect_url&scope=user";
+        $url = "https://github.com/login/oauth/authorize?client_id=$client_id&redirect_uri=$redirect_url";
         header("Location: $url");
         exit;
     }
@@ -125,7 +125,7 @@ $app->get('/challenges', function() use($twig){
     });
 
 $app->get('/notifications', function() use($twig){
-        echo $twig->render('user/notifications.php');
+        echo $twig->render('user/notifications].php');
     });
 
 
