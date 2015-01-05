@@ -125,7 +125,7 @@ $app->get('/challenges', function() use($twig){
     });
 
 $app->get('/notifications', function() use($twig){
-        echo $twig->render('user/notifications].php');
+        echo $twig->render('user/notifications.php');
     });
 
 
