@@ -1,0 +1,17 @@
+{
+    "name": "kayladnls/doyoucomputer",
+    "require": {
+        "slim/slim": "dev-master",
+        "twig/twig": "~1.16@dev",
+        "robmorgan/phinx": "dev-master",
+        "guzzlehttp/guzzle": "~5.0",
+        "vlucas/phpdotenv": "~1.0@dev"
+    },
+    "authors": [
+        {
+            "name": "Kayla Daniels",
+            "email": "kayladnls@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
