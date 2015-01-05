@@ -124,6 +124,10 @@ $app->get('/challenges', function() use($twig){
         echo $twig->render('user/challenges.php');
     });
 
+$app->get('/notifications', function() use($twig){
+        echo $twig->render('user/notifications.php');
+    });
+
 
 //CHALLENGE RELATED STUFFS
 $app->get('/current', function() use($twig){
