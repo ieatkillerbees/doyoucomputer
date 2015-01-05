@@ -129,6 +129,23 @@ $app->get('/auth', function() use($twig)
         $gh_url = isset($user_data['url']) ? $user_data['url'] : '';
         $gh_username = isset($user_data['url']) ? $user_data['url'] : '';
 
+
+        $conn = new PDO('mysql:dbname=doyoucomputer;host=localhost', $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
+
+        $query = 'SELECT * FROM users where github_id = "'.$gh_id.'"';
+
+        $find = $conn->prepare($query);
+        $find->execute();
+
+        if ($find->rowCount() > 0)
+        {
+            $_SESSION['name'] = $name;
+            $_SESSION['image']   = $avatar;
+
+            header("Location: /");
+            exit;
+        }
+
         echo $twig->render('signup-form.php', ['email' => $email, 'name' => $name, 'avatar' => $avatar, 'gh_id' => $gh_id, 'gh_url' => $gh_url, 'gh_un' => $gh_username]);
     }
     else
