@@ -30,7 +30,7 @@ $image = (isset($_SESSION['image'])) ? $_SESSION['image'] : '';
 
 $twig->addGlobal('name', $name);
 $twig->addGlobal('image', $image);
-$twig->addGlobal('basedomain', 'http://dyc.app:8000');
+$twig->addGlobal('basedomain', $_ENV['BASEDOMAIN']);
 
 
 //MISC PAGESx
