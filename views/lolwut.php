@@ -24,7 +24,7 @@
                         <a href="#" class="image featured"><img src="../images/kittybox.gif" alt="" /></a>
                         <footer>
                             <ul class="buttons vertical">
-                                <li><a href="#main" class="button fit special">OMG! Kitteh! Sign Me Up!</a></li>
+                                <li><a href="/signup" class="button fit special">OMG! Kitteh! Sign Me Up!</a></li>
                             </ul>
                         </footer>
                     </section>
