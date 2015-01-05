@@ -6,7 +6,8 @@ Dotenv::load(__DIR__);
 
 session_start();
 $app = new \Slim\Slim(array(
-        'templates.path' => './views'
+        'templates.path' => './views',
+        'debug' => false
     ));
 
 $loader = new Twig_Loader_Filesystem(__DIR__.'/views');
@@ -49,6 +50,52 @@ $app->get('/error', function() use($twig){
         echo $twig->render('404.php');
     });
 
+$app->post('/completeSignup', function () use ($twig){
+
+        $email = isset($_POST['email']) ? $_POST['email'] : '';
+        $name = isset($_POST['name']) ? $_POST['name'] : '';
+        $avatar = isset($_POST['avatar']) ? $_POST['avatar'] : '';
+        $gh_id = isset($_POST['gh_id']) ? $_POST['gh_id'] : '';
+        $gh_url = isset($_POST['gh_url']) ? $_POST['gh_url'] : '';
+        $gh_un = isset($_POST['gh_un']) ? $_POST['gh_un'] : '';
+
+
+        if ($email == '')
+        {
+            echo $twig->render('signup-form.php', ['email' => $email, 'name' => $name, 'avatar' => $avatar, 'gh_id' => $gh_id, 'gh_url' => $gh_url, 'gh_un' => $gh_un, 'error' => true]);
+        }
+        else
+        {
+            $conn = new PDO('mysql:dbname=doyoucomputer;host=localhost', $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
+
+            $query = 'SELECT * FROM users where email = "'.$email.'"';
+
+            $find = $conn->prepare($query);
+            $find->execute();
+            if ($find->rowCount() == 0)
+            {
+                // query
+                $sql = "INSERT INTO users (github_username, email, fullname, github_id, profile_image, profile_url)
+                VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([
+                        $gh_un,
+                        $email,
+                        $name,
+                        $gh_id,
+                        $avatar,
+                        $gh_url
+                    ]);
+            }
+
+            $_SESSION['name'] = $name;
+            $_SESSION['image']   = $avatar;
+
+            header("Location: /");
+            exit;
+        }
+});
+
 
 $app->get('/auth', function() use($twig)
 {
@@ -75,36 +122,14 @@ $app->get('/auth', function() use($twig)
         $access_token = $r['access_token'];
 
         $user_data = $client->get("https://api.github.com/user?access_token=".$access_token)->json();
-        $email = $user_data['email'];
+        $email = isset($user_data['email']) ? $user_data['email'] : '';
+        $name = isset($user_data['name']) ? $user_data['name'] : '';
+        $avatar = isset($user_data['avatar_url']) ? $user_data['avatar_url'] : '';
+        $gh_id = isset($user_data['id']) ? $user_data['id'] : '';
+        $gh_url = isset($user_data['url']) ? $user_data['url'] : '';
+        $gh_username = isset($user_data['url']) ? $user_data['url'] : '';
 
-        $conn = new PDO('mysql:dbname=doyoucomputer;host=localhost', $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
-
-        $query = 'SELECT * FROM users where email = "'.$email.'"';
-
-        $find = $conn->prepare($query);
-        $find->execute();
-        if ($find->rowCount() == 0)
-        {
-            // query
-            $sql = "INSERT INTO users (github_username, email, fullname, github_id, profile_image, profile_url)
-                VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([
-                    $user_data['login'],
-                    $email,
-                    $user_data['name'],
-                    $user_data['id'],
-                    $user_data['avatar_url'],
-                    $user_data['url']
-                ]);
-        }
-
-        $_SESSION['name'] = $user_data['name'];
-        $_SESSION['image']   = $user_data['avatar_url'];
-        $_SESSION['time']     = time();
-
-        header("Location: /");
-        exit;
+        echo $twig->render('signup-form.php', ['email' => $email, 'name' => $name, 'avatar' => $avatar, 'gh_id' => $gh_id, 'gh_url' => $gh_url, 'gh_un' => $gh_username]);
     }
     else
     {
