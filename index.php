@@ -9,13 +9,6 @@ $app = new \Slim\Slim(array(
         'templates.path' => './views'
     ));
 
-$config = array(
-    'client_id' => 'da936d28e357b526a6f5',
-    'client_secret' => '55ba940bd306bc9f13fc57552c0e334e19f88c16',
-    'redirect_url' => 'http://dyc.app:8000/github_login.php',
-    'app_name' => 'DoYouComputer'
-);
-
 $loader = new Twig_Loader_Filesystem(__DIR__.'/views');
 $twig = new Twig_Environment($loader);
 
@@ -49,6 +42,7 @@ $app->get('/signup', function() use($twig){
 $app->get('/logout', function() use($twig){
         $_SESSION = [];
         header("Location: /");
+        exit;
     });
 
 $app->get('/error', function() use($twig){
@@ -110,11 +104,13 @@ $app->get('/auth', function() use($twig)
         $_SESSION['time']     = time();
 
         header("Location: /");
+        exit;
     }
     else
     {
         $url = "https://github.com/login/oauth/authorize?client_id=$client_id&redirect_uri=$redirect_url&scope=user";
         header("Location: $url");
+        exit;
     }
 });
 
