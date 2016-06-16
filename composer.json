@@ -1,5 +1,5 @@
 {
-    "name": "kayladnls/doyoucomputer",
+    "name": "greydnls/doyoucomputer",
     "require": {
         "slim/slim": "dev-master",
         "twig/twig": "~1.16@dev",
@@ -9,8 +9,8 @@
     },
     "authors": [
         {
-            "name": "Kayla Daniels",
-            "email": "kayladnls@gmail.com"
+            "name": "Graham Daniels",
+            "email": "greydnls@gmail.com"
         }
     ],
     "minimum-stability": "dev"
